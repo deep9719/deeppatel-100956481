@@ -1,8 +1,13 @@
 steps:
+  # Step 1: Build the Docker Image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/deeppatel-100966481/app:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/concise-memory-443818-u7/deeppatel-100966481/app:$COMMIT_SHA', '.']
+
+  # Step 2: Push the Docker Image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/deeppatel-100966481/app:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/concise-memory-443818-u7/deeppatel-100966481/app:$COMMIT_SHA']
+
 options:
-  logging: CLOUD_LOGGING_ONLY
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  logging: CLOUD_LOGGING_ONLY  # Store logs only in Cloud Logging
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET  # Store logs in a regional bucket
+
