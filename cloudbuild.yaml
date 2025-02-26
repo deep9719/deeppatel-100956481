@@ -7,7 +7,19 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/concise-memory-443818-u7/deeppatel-100966481/app:$COMMIT_SHA']
 
+  # Step 3: Deploy to Cloud Run using Google Cloud SDK
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'  # Google Cloud CLI container image
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - deeppatel-100966481-service  # Cloud Run service name
+      - --image=us-central1-docker.pkg.dev/concise-memory-443818-u7/deeppatel-100966481/app:$COMMIT_SHA
+      - --region=us-central1  # Region of Cloud Run service
+      - --platform=managed
+      - --allow-unauthenticated  # Allow public access
+      - --port=8080  # Port Cloud Run should expose
+
 options:
   logging: CLOUD_LOGGING_ONLY  # Store logs only in Cloud Logging
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET  # Store logs in a regional bucket
 
